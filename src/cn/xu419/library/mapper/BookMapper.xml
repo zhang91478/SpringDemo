@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须要和Mapper接口名字一致 -->
+<!-- id必须要和Mapper中的方法名一致 -->
+<mapper namespace="cn.xu419.library.mapper.BookMapper">
+    <insert id="addBook">
+        INSERT INTO
+            book (
+            book.title,
+            book.isbn,
+            book.price,
+            book.publicationDate,
+            book.introduction,
+            book.size,
+            book.author,
+            book.press) VALUES (
+            #{book.title},
+            #{book.isbn},
+            #{book.price},
+            #{book.publicationDate},
+            #{book.introduction},
+            #{book.size},
+            #{book.author},
+            #{book.press});
+    </insert>
+
+    <select id="getBookByIsbn" resultType="cn.xu419.library.model.BookModel">
+        SELECT * FROM book WHERE isbn = #{isbn} LIMIT 1;
+    </select>
+
+
+</mapper>

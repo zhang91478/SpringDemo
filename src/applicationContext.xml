@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--1.定义数据源-->
+    <bean id="ds"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/library?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="JavaWeb"/>
+        <property name="password" value="123456789"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    </bean>
+
+    <!--2.mybatis SQLSession定义-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ds"/>
+        <property name="typeAliasesPackage" value="cn.xu419.library.model"/>
+    </bean>
+
+    <!--3.mybatis 自动扫描加载SQL 映射接口 -->
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="cn.xu419.library.mapper"/>-->
+        <!--&lt;!&ndash; 此处是否可替代  &ndash;&gt;-->
+        <!--<property name="sqlSessionFactoryBeanName" value="org.mybatis.spring.SqlSessionFactoryBean"/>-->
+    <!--</bean>-->
+
+
+    <!--4.事务管理  -->
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds"/>
+    </bean>
+
+    <!--5.使用声明式事务 -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <!--6.定义mapper接口-->
+    <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="cn.xu419.library.mapper.BookMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="cn.xu419.library.mapper.RecordMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="readerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="cn.xu419.library.mapper.ReaderMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!--7.定义持久化Service服务层和查询Service-->
+    <bean id="persistService" class="cn.xu419.library.service.PersistService"/>
+
+    <bean id="selectService" class="cn.xu419.library.service.SelectService"/>
+
+
+    <!--8.定义AOP配置-->
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="selectPointcut"
+                      expression="target(cn.xu419.library.service.SelectService) and execution(* *(..))"/>
+        <aop:aspect id="selectAdvisor" ref="selectAdvice">
+            <aop:before method="before" pointcut-ref="selectPointcut"/>
+
+            <aop:around method="recordMethodTime" pointcut-ref="selectPointcut"/>
+
+            <aop:after method="After" pointcut-ref="selectPointcut"/>
+        </aop:aspect>
+
+    </aop:config>
+
+
+    <!--9.通知-->
+    <bean id="selectAdvice" class="cn.xu419.library.aop.SelectAdvice"/>
+
+
+</beans>

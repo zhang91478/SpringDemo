@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须要和Mapper接口名字一致 -->
+<!-- id必须要和Mapper中的方法名一致 -->
+<mapper namespace="cn.xu419.library.mapper.ReaderMapper">
+    <insert id="addReader">
+        INSERT INTO library.reader(account, name, password, sex, position, email) VALUES (
+                #{reader.account},
+                #{reader.name},
+                #{password},
+                #{reader.sex},
+                #{reader.position},
+                #{reader.email});
+    </insert>
+
+    <select id="getReaderByAccount" resultType="cn.xu419.library.model.ReaderModel">
+        SELECT * FROM reader WHERE account = #{account} LIMIT 1;
+    </select>
+
+
+</mapper>
