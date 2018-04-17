@@ -18,5 +18,23 @@
         SELECT * FROM reader WHERE account = #{account} LIMIT 1;
     </select>
 
+    <update id="updateReader">
+        UPDATE reader SET
+            name = #{reader.name},
+            sex = #{reader.sex},
+            position = #{reader.position},
+            email = #{reader.email}
+            WHERE account = #{reader.account};
+    </update>
+
+
+    <delete id="deleteReaderByAccount">
+        DELETE FROM reader WHERE account = #{account};
+    </delete>
+
+    <update id="updatePassword">
+        UPDATE reader SET password = #{new} WHERE account = #{account} AND password = #{old};
+    </update>
+
 
 </mapper>

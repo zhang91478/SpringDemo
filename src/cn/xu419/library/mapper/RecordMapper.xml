@@ -4,7 +4,37 @@
 <!-- namespace必须要和Mapper接口名字一致 -->
 <!-- id必须要和Mapper中的方法名一致 -->
 <mapper namespace="cn.xu419.library.mapper.RecordMapper">
+    <insert id="addRecord">
+        INSERT INTO record (account,isbn,lendTime,returnTime)
+                VALUES (
+                    #{record.account},
+                    #{record.isbn},
+                    #{record.lendTime},
+                    #{record.returnTime}
+                );
+    </insert>
+
+    <delete id="deleteRecord">
+        DELETE FROM record WHERE account = #{record.account}
+        AND isbn = #{record.isbn}
+        AND lendTime = #{record.lendTime}
+        And returnTime = #{record.returnTime};
+    </delete>
 
 
+    <update id="updateRecord">
+        UPDATE record SET account = #{record.account},
+            isbn = #{record.isbn},
+            lendTime = #{record.lendTime},
+            returnTime = #{record.returnTime};
+    </update>
+
+    <select id="getRecordByIsbn" resultType="cn.xu419.library.model.RecordModel">
+        SELECT * FROM record WHERE isbn = #{isbn};
+    </select>
+
+    <select id="getRecordByAccount" resultType="cn.xu419.library.model.RecordModel">
+        SELECT * FROM record WHERE account = #{account};
+    </select>
 
 </mapper>

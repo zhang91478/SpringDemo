@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xu419.library.mapper.MemoryMapper">
+    <insert id="addMemoryInfo">
+        INSERT INTO library.memory (max, total, free, time) VALUES(
+        #{info.maxMemory},
+        #{info.totalMemory},
+        #{info.freeMemory},
+        #{info.time});
+    </insert>
+
+    <select id="getMemory">
+        SELECT * FROM memory ORDER BY id DESC LIMIT #{amount}
+    </select>
+</mapper>

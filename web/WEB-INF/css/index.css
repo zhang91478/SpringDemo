@@ -1,0 +1,7 @@
+.searchBox{
+    width:200px;
+    height:100px;
+    border: 1px solid #000;
+    text-align:center; /* 水平居中 */
+    line-height: 100px; /* line-height=height */
+}

@@ -36,11 +36,13 @@ public interface IReaderPersist<T> {
     /**
      * 修改用户密码
      *
+     * @param account
+     * 用户账号
      * @param oldPassWord
      * 用户老密码
      * @param newPassWord
      * 用户新密码
      *
      */
-    public void updatePassword(String oldPassWord,String newPassWord);
+    public void updatePassword(String account,String oldPassWord,String newPassWord);
 }

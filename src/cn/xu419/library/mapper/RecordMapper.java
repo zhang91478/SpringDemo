@@ -14,7 +14,7 @@ public interface RecordMapper {
      * 插入一条借书数据
      *
      * @param record
-     * 借书记录，除returnTime外其他字段不能为空
+     * 借书记录，所有字段不为空，用returnTime和lendTime想等代表借书未还。
      *
      */
     public void addRecord(@Param("record") RecordModel record);
@@ -29,7 +29,7 @@ public interface RecordMapper {
     public void deleteRecord(@Param("record") RecordModel record);
 
     /**
-     * 更新借还记录，可用于还书
+     * 更新借还记录，用于还书
      *
      * @param record
      * 完整的借书记录，包括书的isbn,读者的account,借出和归还时间(归还时间可为空)

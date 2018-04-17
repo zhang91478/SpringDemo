@@ -26,7 +26,31 @@
     </insert>
 
     <select id="getBookByIsbn" resultType="cn.xu419.library.model.BookModel">
-        SELECT * FROM book WHERE isbn = #{isbn} LIMIT 1;
+        SELECT * FROM book WHERE isbn = #{isbn};
+    </select>
+
+    <update id="updateBook">
+        UPDATE book SET
+            book.author = #{book.author},
+            book.title = #{book.title},
+            book.price = #{book.price},
+            book.publicationDate = #{book.publicationDate},
+            book.introduction = #{book.introduction},
+            book.size = #{book.size},
+            book.press = #{book.press}
+        WHERE isbn = #{book.isbn};
+    </update>
+
+    <delete id="deleteBookByIsbn" >
+        DELETE FROM book WHERE isbn = #{isbn}
+    </delete>
+
+    <select id="getBooksByAuthor" resultType="cn.xu419.library.model.BookModel">
+    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{author},'%') ;
+    </select>
+
+    <select id="getBooksByTitle" resultType="cn.xu419.library.model.BookModel">
+    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{title},'%') ;
     </select>
 
 

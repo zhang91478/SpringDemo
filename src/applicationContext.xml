@@ -21,12 +21,13 @@
         <property name="typeAliasesPackage" value="cn.xu419.library.model"/>
     </bean>
 
-    <!--3.mybatis 自动扫描加载SQL 映射接口 -->
-    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-        <!--<property name="basePackage" value="cn.xu419.library.mapper"/>-->
-        <!--&lt;!&ndash; 此处是否可替代  &ndash;&gt;-->
+    <!--3.mybatis 自动扫描加载SQL 映射接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.xu419.library.mapper"/>
+        <!-- 此处是否可替代  -->
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
         <!--<property name="sqlSessionFactoryBeanName" value="org.mybatis.spring.SqlSessionFactoryBean"/>-->
-    <!--</bean>-->
+    </bean>
 
 
     <!--4.事务管理  -->
@@ -39,20 +40,25 @@
     <tx:annotation-driven transaction-manager="txManager"/>
 
     <!--6.定义mapper接口-->
-    <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="cn.xu419.library.mapper.BookMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
+    <!--<bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="cn.xu419.library.mapper.BookMapper"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
 
-    <bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="cn.xu419.library.mapper.RecordMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
+    <!--<bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="cn.xu419.library.mapper.RecordMapper"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
 
-    <bean id="readerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="cn.xu419.library.mapper.ReaderMapper"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>
+    <!--<bean id="readerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="cn.xu419.library.mapper.ReaderMapper"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="memoryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="cn.xu419.library.mapper.MemoryMapper"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
 
     <!--7.定义持久化Service服务层和查询Service-->
     <bean id="persistService" class="cn.xu419.library.service.PersistService"/>
@@ -62,21 +68,46 @@
 
     <!--8.定义AOP配置-->
     <aop:config proxy-target-class="true">
-        <aop:pointcut id="selectPointcut"
-                      expression="target(cn.xu419.library.service.SelectService) and execution(* *(..))"/>
-        <aop:aspect id="selectAdvisor" ref="selectAdvice">
-            <aop:before method="before" pointcut-ref="selectPointcut"/>
 
-            <aop:around method="recordMethodTime" pointcut-ref="selectPointcut"/>
+        <aop:aspect ref="daoAdvice">
+            <aop:pointcut id="ServicePointcut"
+                          expression="target(
+                      cn.xu419.library.service.PersistService)
+                      and execution(* *(..))"/>
+            <aop:before method="before" pointcut-ref="ServicePointcut"/>
 
-            <aop:after method="After" pointcut-ref="selectPointcut"/>
+            <aop:around method="recordMethodTime" pointcut-ref="ServicePointcut"/>
+
+            <aop:after method="After" pointcut-ref="ServicePointcut"/>
         </aop:aspect>
-
     </aop:config>
 
 
+
     <!--9.通知-->
-    <bean id="selectAdvice" class="cn.xu419.library.aop.SelectAdvice"/>
+    <bean id="daoAdvice" class="cn.xu419.library.aop.DaoAdvice"/>
+
+
+    <!-- 10.初始化Spring时启动的线程 -->
+    <bean id="jobMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+            <map>
+                <entry key="memoryMonitorThread" value-ref="memoryMonitorThread" />
+            </map>
+        </property>
+    </bean>
+
+
+    <!-- 11.内存监控线程 -->
+    <bean id="memoryMonitorThread" class="cn.xu419.library.thread.MemThread">
+        <property name="name" value="内存监控线程" />
+    </bean>
+
+    <!-- 12.控制器 -->
+    <bean id="bookHandlers" class="cn.xu419.library.handlers.BookHandles" />
+    <bean id="recordHandles" class="cn.xu419.library.handlers.RecordHandles"/>
+    <bean id="readerHandles" class="cn.xu419.library.handlers.ReaderHandles"/>
+
 
 
 </beans>

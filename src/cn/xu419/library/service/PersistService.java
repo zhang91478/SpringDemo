@@ -69,7 +69,13 @@ public class PersistService extends AbstractDao
     @Override
     public void addReader(ReaderModel reader, String password) {
         try {
-            readerMapper.addReader(reader, Md5Utils.transToMd5(password));
+            if(super.isSexLegal(reader.getSex())&&super.isPositionLegal(reader.getPosition())){
+                readerMapper.addReader(reader, Md5Utils.transToMd5(password));
+            } else {
+                String string = String.format("记录%s无法添加!", reader.toString());
+                logger.warn(string);
+            }
+
         } catch (Exception e){
             logger.error("ERROR",e);
         }
@@ -90,13 +96,19 @@ public class PersistService extends AbstractDao
     }
 
     /**
-     * 通过账号删除一个读者
+     * 通过账号删除一个读者，白名单读者不允许删除
      *
      * @param account 一个读者的账号
      */
     @Override
     public void deleteReaderByAccount(String account) {
         try {
+            //白名单不允许删除
+            if(super.checkWhitePermission(account)){
+                String string = String.format("记录%s无法删除!", account);
+                logger.warn(string);
+                return;
+            }
             readerMapper.deleteReaderByAccount(account);
         } catch (Exception e){
             logger.error("ERROR",e);
@@ -104,13 +116,19 @@ public class PersistService extends AbstractDao
     }
 
     /**
-     * 插入一条借书数据
+     * 插入一条借书数据，黑名单用户不允许借书
      *
      * @param record 借书记录，除returnTime外其他字段不能为空
      */
     @Override
     public void addRecord(RecordModel record) {
         try {
+            //黑名单不允许借书
+            if (super.checkBlackPermission(record.getAccount())){
+                String string = String.format("记录%s无法删除!", record.getAccount());
+                logger.warn(string);
+                return;
+            }
             recordMapper.addRecord(record);
         } catch (Exception e){
             logger.error("ERROR",e);
@@ -152,9 +170,9 @@ public class PersistService extends AbstractDao
      * @param newPassWord 用户新密码
      */
     @Override
-    public void updatePassword(String oldPassWord, String newPassWord) {
+    public void updatePassword(String account,String oldPassWord, String newPassWord) {
         try {
-            readerMapper.updatePassword(Md5Utils.transToMd5(oldPassWord),Md5Utils.transToMd5(newPassWord));
+            readerMapper.updatePassword(account,Md5Utils.transToMd5(oldPassWord),Md5Utils.transToMd5(newPassWord));
         } catch (Exception e){
             logger.error("ERROR",e);
         }

@@ -11,7 +11,7 @@
     <appender name="total" class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="ALL" />
         <!-- levels this appender emits -->
-        <param name="File" value="log/log4j.log" />
+        <param name="File" value="E:log/log4j.log" />
         <param name="Append" value="true" />
         <param name="ImmediateFlush" value="true" />
         <param name="BufferedIO" value="false" />

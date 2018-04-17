@@ -13,7 +13,7 @@ public interface IReaderSelect<T> {
      *
      * @param  account
      * 所查询读者的账号
-     *
+     * @return  一个读者的基本信息
      */
     public T getReaderByAccount(String account);
 

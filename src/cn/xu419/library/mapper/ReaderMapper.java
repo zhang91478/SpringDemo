@@ -34,7 +34,7 @@ public interface ReaderMapper {
      *
      * @param  account
      * 所查询读者的账号
-     *
+     * @return 一个用户的基本信息
      */
     public ReaderModel getReaderByAccount(@Param("account") String account);
 
@@ -50,12 +50,13 @@ public interface ReaderMapper {
     /**
      * 修改用户密码
      *
+     * @param account 用户账号
      * @param oldPassWord
      * 用户老密码
      * @param newPassWord
      * 用户新密码
      *
      */
-    public void updatePassword(@Param("old") String oldPassWord,@Param("new") String newPassWord);
+    public void updatePassword(@Param("account") String account,@Param("old") String oldPassWord,@Param("new") String newPassWord);
 
 }

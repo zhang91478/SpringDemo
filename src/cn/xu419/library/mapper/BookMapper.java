@@ -30,7 +30,7 @@ public interface BookMapper {
      * @return BookModel
      * 查询返回的书籍，若不存在则为空
      */
-    public BookModel getBookByIsbn(@Param("isbn") String isbn);
+    public List<BookModel> getBooksByIsbn(@Param("isbn") String isbn);
 
     /**
      * 更新一本书的数目信息，需要知道书的isbn

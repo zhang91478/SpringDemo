@@ -24,9 +24,9 @@ public class SelectService extends AbstractDao
      * 查询返回的书籍，若不存在则为空
      */
     @Override
-    public BookModel getBookByIsbn(String isbn) {
+    public List<BookModel> getBooksByIsbn(String isbn) {
         try {
-            return bookMapper.getBookByIsbn(isbn);
+            return bookMapper.getBooksByIsbn(isbn);
         } catch (Exception e){
             logger.error("ERROR",e);
             return null;

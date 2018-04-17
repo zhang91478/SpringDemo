@@ -17,7 +17,7 @@ public interface IBookSelect<T> {
      * @return BookModel
      * 查询返回的书籍，若不存在则为空
      */
-    public T getBookByIsbn(String isbn);
+    public List<T> getBooksByIsbn(String isbn);
 
     /**
      * 查询指定作者所著书籍，返回该作者的所有数据的数目信息

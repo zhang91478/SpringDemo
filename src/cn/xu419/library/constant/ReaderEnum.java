@@ -7,7 +7,9 @@ package cn.xu419.library.constant;
  */
 public enum ReaderEnum {
     SEX_LIST("sex","性别"),
-    POSITION_LIST("position","职位");
+    POSITION_LIST("position","职位"),
+    WHITE_LIST("black","黑名单"),
+    BLACK_LIST("black","黑名单");
 
     /**
      * 类型
