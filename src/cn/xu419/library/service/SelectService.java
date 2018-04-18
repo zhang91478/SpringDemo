@@ -3,6 +3,7 @@ package cn.xu419.library.service;
 import cn.xu419.library.model.BookModel;
 import cn.xu419.library.model.ReaderModel;
 import cn.xu419.library.model.RecordModel;
+import cn.xu419.library.util.Md5Utils;
 
 
 import java.util.List;
@@ -81,6 +82,15 @@ public class SelectService extends AbstractDao
         }
     }
 
+    @Override
+    public ReaderModel login(String account, String password) {
+        try {
+            return readerMapper.login(account,Md5Utils.transToMd5(password));
+        }catch (Exception e){
+            logger.error("ERROR",e);
+            return null;
+        }
+    }
 
     /**
      * 查询某本书的借书记录

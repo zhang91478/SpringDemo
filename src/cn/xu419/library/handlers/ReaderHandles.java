@@ -1,44 +1,116 @@
 package cn.xu419.library.handlers;
 
+import cn.xu419.library.model.BookModel;
 import cn.xu419.library.model.ReaderModel;
 import cn.xu419.library.model.RecordModel;
-import cn.xu419.library.service.IReaderPersist;
-import cn.xu419.library.service.IReaderSelect;
-import cn.xu419.library.service.IRecordPersist;
-import cn.xu419.library.service.IRecordSelect;
+import cn.xu419.library.service.*;
+
+import com.sun.prism.impl.Disposer;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author bsz
  * Created on 2018/4/16
  */
+@Controller
+@SessionAttributes("nowUser")
 public class ReaderHandles {
     private Logger logger = Logger.getLogger(this.getClass());
 
-    @Autowired()
+    @Autowired
     @Qualifier("selectService")
-    IReaderSelect<ReaderModel> selectService;
+    private SelectService selectService;
 
-    @Autowired()
+
+    @Autowired
+
+    private IRecordSelect<RecordModel> recordService;
+
+
+    @Autowired
     @Qualifier("persistService")
-    IReaderPersist<ReaderModel> persistService;
+    private IReaderPersist<ReaderModel> persistService;
+
+
+
 
     /**
+     * 页面跳转到注册页面
      *
-     *
-     * @param
-     *
-     * @return
+     * @return ModelANdView
      *
      */
-    @RequestMapping("/reader")
-    public String register(ReaderModel reader,String password){
+    @RequestMapping("/registerPage")
+    public String toRegister(){
+        return "registerPage";
+    }
+
+
+    /**
+     * 登陆
+     *
+     * @param map
+     * 一个map
+     * @param account
+     * 账户
+     * @param password
+     * 密码
+     * @return modelAndView
+     *
+     */
+    @RequestMapping("/login")
+
+    public String login(Map<String,Object> map, String account, String password,Model model){
+        ReaderModel readerModel = selectService.login(account,password);
+        if(readerModel.getAccount() == null){
+            return "index";
+        }else {
+            model.addAttribute("nowUser",readerModel);
+            //map.put("nowUser",readerModel);
+            List<BookModel> list =new ArrayList<BookModel>();
+            List<RecordModel> list1 = recordService.getRecordByAccount(account);
+
+            System.out.println("------------------->"+list1.toString());
+
+            for (RecordModel aList1 : list1) {
+                List<BookModel> list2 = selectService.getBooksByIsbn(aList1.getIsbn());
+                System.out.println("------------------->"+list2.toString());
+                list.addAll(list2);
+            }
+            map.put("lendInfo",list1);
+            map.put("lendBookInfo",list);
+            return "readerinfo";
+        }
+
+    }
+
+    /**
+     * 注册一个用户并返回到登陆页面
+     *
+     * @param reader
+     * 用户个人信息
+     * @param password
+     * 用户密码
+     *
+     */
+    @RequestMapping("/register")
+    public String register(ReaderModel reader,@Param("password") String password){
         logger.info("用户注册"+reader.toString());
         persistService.addReader(reader,password);
-        return "register";
+        return "index";
     }
 
     /**
@@ -49,7 +121,7 @@ public class ReaderHandles {
      * @return ModelAndView
      *
      */
-    @RequestMapping("/reader")
+    @RequestMapping("/reader3")
     public String updateInfo(ReaderModel reader){
         logger.info("用户信息修改"+reader.toString());
         persistService.updateReader(reader);
@@ -68,7 +140,7 @@ public class ReaderHandles {
      * @return ModelAndView
      *
      */
-    @RequestMapping("/reader")
+    @RequestMapping("/reader2")
     public String updatePassword(String account,String oldPassword,String newPassword){
         logger.info("用户信息修改"+account);
         persistService.updatePassword(account,oldPassword,newPassword);
@@ -83,7 +155,7 @@ public class ReaderHandles {
      * @return modelAndView
      *
      */
-    @RequestMapping("/reader")
+    @RequestMapping("/reader1")
     public String getAccount(String account){
         logger.info("查询用户"+account);
         selectService.getReaderByAccount(account);

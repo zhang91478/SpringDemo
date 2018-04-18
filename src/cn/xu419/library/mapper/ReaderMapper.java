@@ -2,6 +2,7 @@ package cn.xu419.library.mapper;
 
 import cn.xu419.library.model.ReaderModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 读者信息的管理，增删改查
@@ -59,4 +60,15 @@ public interface ReaderMapper {
      */
     public void updatePassword(@Param("account") String account,@Param("old") String oldPassWord,@Param("new") String newPassWord);
 
+    /**
+     * 通过账户密码查询是否存在此账户
+     *
+     * @param account
+     * 账户
+     * @param password
+     * 密码
+     * @return 是否存在此账户
+     *
+     */
+    public ReaderModel login(@Param("account") String account, @Param("password") String password);
 }

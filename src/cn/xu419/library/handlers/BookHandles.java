@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import com.google.common.collect.Maps;import org.springframework.web.bind.annotation.RequestMethod;
+
+
 import java.util.Map;
 
 /**
@@ -20,7 +22,8 @@ import java.util.Map;
 public class BookHandles {
     private Logger logger = Logger.getLogger(this.getClass());
 
-    @Autowired
+    @Autowired()
+    @Qualifier("selectService")
     IBookSelect<BookModel> selectService;
 
     @Autowired()
@@ -42,12 +45,6 @@ public class BookHandles {
         logger.info("开始调用books");
         if(searchType.equals("title")){
             map.put("books",selectService.getBooksByTitle(search));
-
-            List <BookModel> list = selectService.getBooksByTitle(search);
-            for (int i = 0; i < list.size(); i++) {
-                System.out.println(list.get(i).toString());
-            }
-
         }else if(searchType.equals("author")){
             map.put("books",selectService.getBooksByAuthor(search));
         }else if(searchType.equals("isbn")){
@@ -98,5 +95,29 @@ public class BookHandles {
         logger.info("更新book"+bookModel.toString());
         persistService.updateBook(bookModel);
         return "updateBook";
+    }
+
+
+    @RequestMapping(value = "tttttttt",method = RequestMethod.GET)
+    public String ttttt1(){
+        System.out.println("-----------------get----------------------------->");
+        return "get";
+    }
+    @RequestMapping(value = "tttttttt",method = RequestMethod.PUT)
+    public String ttttt2(){
+        System.out.println("-----------------put--------------------------->");
+        return "put";
+    }
+
+    @RequestMapping(value = "tttttttt",method = RequestMethod.DELETE)
+    public String ttttt3(){
+        System.out.println("-----------------delete--------------------------->");
+        return "delete";
+    }
+
+    @RequestMapping(value = "tttttttt",method = RequestMethod.POST)
+    public String ttttt4(){
+        System.out.println("-----------------Post--------------------------->");
+        return "post";
     }
 }

@@ -32,9 +32,12 @@
         DELETE FROM reader WHERE account = #{account};
     </delete>
 
-    <update id="updatePassword">
+    <update id="updatePassword" >
         UPDATE reader SET password = #{new} WHERE account = #{account} AND password = #{old};
     </update>
 
+    <select id="login" resultType="cn.xu419.library.model.ReaderModel">
+        SELECT * FROM reader WHERE account = #{account} AND password = #{password} LIMIT 1;
+    </select>
 
 </mapper>

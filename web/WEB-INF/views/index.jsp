@@ -36,13 +36,35 @@
       </form>
   </div>
   <div class="login">
-      <form action="#">
+      <form action="/login" method="post">
           <input type="text" name="account" placeholder="账户"><br/>
           <input type="password" name="password" placeholder="密码"><br/>
-          <input type="submit" value="登陆" style="margin: auto">
+          <input type="submit" value="登陆">
       </form>
-      <a href="#">注册</a>
-      <a href="books?search=完&&searchType=title">调试用</a>
+      <a href="registerPage">注册</a>
   </div>
   </body>
+
+<form method="post" action="/tttttttt">
+    <input type="hidden" name="_method" value="POST" />
+    <input type="submit" value="post">
+</form>
+
+  <form method="post" action="/tttttttt">
+      <input type="hidden" name="_method" value="GET" />
+      <input type="submit" value="get">
+  </form>
+
+  <form   method="post" action="/tttttttt">
+      <input type="hidden" name="_method" value="PUT" />
+      <input type="submit" value="put">
+  </form>
+
+  <form  action="/tttttttt" method="post">
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="submit" value="delete">
+  </form>
+
+
+
 </html>

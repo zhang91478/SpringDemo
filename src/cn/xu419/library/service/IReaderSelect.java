@@ -17,5 +17,7 @@ public interface IReaderSelect<T> {
      */
     public T getReaderByAccount(String account);
 
+    public T login(String account,String password);
+
 
 }

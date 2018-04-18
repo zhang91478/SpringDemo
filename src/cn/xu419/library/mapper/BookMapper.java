@@ -22,15 +22,7 @@ public interface BookMapper {
      */
     public void addBook(@Param("book")BookModel book);
 
-    /**
-     * 通过isbn,查询书籍，返回结果唯一
-     *
-     * @param isbn
-     * 一本书的isbn
-     * @return BookModel
-     * 查询返回的书籍，若不存在则为空
-     */
-    public List<BookModel> getBooksByIsbn(@Param("isbn") String isbn);
+
 
     /**
      * 更新一本书的数目信息，需要知道书的isbn
@@ -68,4 +60,14 @@ public interface BookMapper {
      *
      */
     public List<BookModel> getBooksByTitle(@Param("title") String title);
+
+    /**
+     * 通过isbn,查询书籍，返回结果唯一
+     *
+     * @param isbn
+     * 一本书的isbn
+     * @return BookModel
+     * 查询返回的书籍，若不存在则为空
+     */
+    public List<BookModel> getBooksByIsbn(@Param("isbn") String isbn);
 }

@@ -25,9 +25,6 @@
             #{book.press});
     </insert>
 
-    <select id="getBookByIsbn" resultType="cn.xu419.library.model.BookModel">
-        SELECT * FROM book WHERE isbn = #{isbn};
-    </select>
 
     <update id="updateBook">
         UPDATE book SET
@@ -42,15 +39,20 @@
     </update>
 
     <delete id="deleteBookByIsbn" >
-        DELETE FROM book WHERE isbn = #{isbn}
+        DELETE FROM book WHERE isbn = #{isbn};
     </delete>
 
+
+    <select id="getBooksByIsbn" resultType="cn.xu419.library.model.BookModel">
+        SELECT * FROM book WHERE book.isbn = #{isbn};
+    </select>
+
     <select id="getBooksByAuthor" resultType="cn.xu419.library.model.BookModel">
-    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{author},'%') ;
+    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{author},'%') LIMIT 20;
     </select>
 
     <select id="getBooksByTitle" resultType="cn.xu419.library.model.BookModel">
-    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{title},'%') ;
+    SELECT * FROM book WHERE book.author LIKE CONCAT('%',#{title},'%') LIMIT 20;
     </select>
 
 

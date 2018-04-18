@@ -7,7 +7,7 @@
 
     <!--1.配置欢迎页面-->
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/WEB-INF/views/index.jsp</welcome-file>
     </welcome-file-list>
 
     <!--2.配置SpringIoC容器配置文件路径-->
@@ -24,8 +24,9 @@
 
     <!--4.启动SpringIoC容器监听-->
     <!-- 第一种方式为启动Spring自带的监听器 -->
-     <listener> <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-        </listener>
+     <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+     </listener>
     <!-- 第二种方式为启动自定义的监听器 -->
     <!--<listener>-->
         <!--<listener-class>cn.xu419.library.listener.MyContextLoaderListener</listener-class>-->
@@ -43,6 +44,11 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:springmvc.xml</param-value>
+
+        </init-param>
+        <init-param>
+            <param-name>readonly</param-name>
+            <param-value>false</param-value>
         </init-param>
         <load-on-startup>0</load-on-startup>
     </servlet>

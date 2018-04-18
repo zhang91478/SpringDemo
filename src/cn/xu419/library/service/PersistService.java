@@ -125,7 +125,7 @@ public class PersistService extends AbstractDao
         try {
             //黑名单不允许借书
             if (super.checkBlackPermission(record.getAccount())){
-                String string = String.format("记录%s无法删除!", record.getAccount());
+                String string = String.format("%s暂时无法借书!", record.getAccount());
                 logger.warn(string);
                 return;
             }
