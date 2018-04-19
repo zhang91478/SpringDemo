@@ -20,4 +20,15 @@ public class UtilHandles {
         return  "index";
     }
 
+    /**
+     *
+     * 返回个人信息也
+     *
+     * @return ModeLAndView
+     *
+     */
+    @RequestMapping("readerinfo")
+    public String returnReaderInfo(){
+        return  "readerinfo";
+    }
 }

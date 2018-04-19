@@ -1,9 +1,11 @@
 package cn.xu419.library.handlers;
 
 
+
 import cn.xu419.library.model.RecordModel;
 import cn.xu419.library.service.IRecordPersist;
 import cn.xu419.library.service.IRecordSelect;
+import cn.xu419.library.service.SelectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * @author bsz
@@ -22,13 +25,15 @@ public class RecordHandles {
     private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired()
-    @Qualifier("selectService")
-    IRecordSelect<RecordModel> selectService;
-
-    @Autowired()
     @Qualifier("persistService")
     IRecordPersist<RecordModel> persistService;
 
+    @Autowired
+    private IRecordSelect<RecordModel> recordService;
+
+    @Autowired
+    @Qualifier("selectService")
+    private SelectService selectService;
 
 
     /**
@@ -43,7 +48,7 @@ public class RecordHandles {
      *
      */
     @RequestMapping(value = "/record",method = RequestMethod.PUT)
-    public String lend(String account,String isbn){
+    public String lend(Map<String,Object> map, String account, String isbn){
 
         System.out.println("record--------------->POST-------------->readerinfo");
 
@@ -56,17 +61,29 @@ public class RecordHandles {
             persistService.addRecord(record);
         }else {
             logger.info(String.format("未登陆，ISBN-%s的书籍无法借阅",isbn));
+            return "redirect:index";
         }
+
         logger.info("添加一个借书记录到数据库");
-        return "index";
+        return "redirect:login";
     }
 
+    /**
+     * 没什么用，但不写post的方法，tomcat会报错
+     *
+     * @return ModelAndView
+     */
     @RequestMapping(value = "/record",method = RequestMethod.POST)
     public String doPost(){
         System.out.println("record--------------->PUT-------------->donothing");
         return "index";
     }
 
+    /**
+     * 没什么用，但不写get的方法，tomcat会报错
+     *
+     * @return ModelAndView
+     */
     @RequestMapping(value = "/record",method = RequestMethod.GET)
     public String doGET(){
         System.out.println("record--------------->GET-------------->donothing");
@@ -81,11 +98,12 @@ public class RecordHandles {
      * @return ModelAndView
      *
      */
-    @RequestMapping("/record1")
+    @RequestMapping(value = "/record",method = RequestMethod.DELETE)
     public String back(RecordModel record){
         logger.info("更新数据库的一条借书记录"+record);
+        record.setReturnTime(new Timestamp(System.currentTimeMillis()));
         persistService.updateRecord(record);
-        return "back";
+        return "redirect:login";
     }
 
 
@@ -133,10 +151,4 @@ public class RecordHandles {
         selectService.getRecordByIsbn(isbn);
         return "isbn";
     }
-
-
-
-
-
-
 }

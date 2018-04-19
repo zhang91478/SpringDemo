@@ -4,6 +4,8 @@ import cn.xu419.library.model.ReaderModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * 读者信息的管理，增删改查
  *
@@ -71,4 +73,13 @@ public interface ReaderMapper {
      *
      */
     public ReaderModel login(@Param("account") String account, @Param("password") String password);
+
+    /**
+     *
+     * 获得所有用户
+     *
+     * @return 所有用户
+     *
+     */
+    public List<ReaderModel> getReaders();
 }

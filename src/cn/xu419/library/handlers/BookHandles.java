@@ -98,26 +98,4 @@ public class BookHandles {
     }
 
 
-    @RequestMapping(value = "tttttttt",method = RequestMethod.GET)
-    public String ttttt1(){
-        System.out.println("-----------------get----------------------------->");
-        return "get";
-    }
-    @RequestMapping(value = "tttttttt",method = RequestMethod.PUT)
-    public String ttttt2(){
-        System.out.println("-----------------put--------------------------->");
-        return "put";
-    }
-
-    @RequestMapping(value = "tttttttt",method = RequestMethod.DELETE)
-    public String ttttt3(){
-        System.out.println("-----------------delete--------------------------->");
-        return "delete";
-    }
-
-    @RequestMapping(value = "tttttttt",method = RequestMethod.POST)
-    public String ttttt4(){
-        System.out.println("-----------------Post--------------------------->");
-        return "post";
-    }
 }

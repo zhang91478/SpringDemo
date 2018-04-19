@@ -14,9 +14,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +29,7 @@ import java.util.Map;
  * Created on 2018/4/16
  */
 @Controller
-@SessionAttributes("nowUser")
+@SessionAttributes({"nowUser","password"})
 public class ReaderHandles {
     private Logger logger = Logger.getLogger(this.getClass());
 
@@ -72,27 +75,38 @@ public class ReaderHandles {
      *
      */
     @RequestMapping("/login")
+    public String login(Map<String,Object> map, String account, String password, HttpSession session) {
 
-    public String login(Map<String,Object> map, String account, String password,Model model){
-        ReaderModel readerModel = selectService.login(account,password);
-        if(readerModel.getAccount() == null){
+        if (account == null || password == null) {
+            account = ((ReaderModel) session.getAttribute("nowUser")).getAccount();
+            password = (String) session.getAttribute("password");
+
+        }
+        ReaderModel readerModel = selectService.login(account, password);
+
+        if (readerModel.getAccount() == null) {
             return "index";
-        }else {
-            model.addAttribute("nowUser",readerModel);
-            //map.put("nowUser",readerModel);
-            List<BookModel> list =new ArrayList<BookModel>();
+        } else if (!readerModel.getPosition().equals("manage")) {
+            session.setAttribute("nowUser", readerModel);
+            session.setAttribute("password", password);
+            List<BookModel> list = new ArrayList<BookModel>();
             List<RecordModel> list1 = recordService.getRecordByAccount(account);
-
-            System.out.println("------------------->"+list1.toString());
 
             for (RecordModel aList1 : list1) {
                 List<BookModel> list2 = selectService.getBooksByIsbn(aList1.getIsbn());
-                System.out.println("------------------->"+list2.toString());
                 list.addAll(list2);
             }
-            map.put("lendInfo",list1);
-            map.put("lendBookInfo",list);
+            map.put("lendInfo", list1);
+            map.put("lendBookInfo", list);
+
             return "readerinfo";
+        } else{
+            session.setAttribute("nowUser", readerModel);
+            session.setAttribute("password", password);
+
+            map.put("allUser",selectService.getReaders());
+
+            return "manage";
         }
 
     }
@@ -160,5 +174,33 @@ public class ReaderHandles {
         logger.info("查询用户"+account);
         selectService.getReaderByAccount(account);
         return "getAccount";
+    }
+
+    /**
+     * 删除一个用户
+     *
+     * @param account
+     * 需要删除的用户的账户
+     * @return 管理页
+     *
+     */
+    @RequestMapping(value = "/manage",method = RequestMethod.DELETE)
+    public String delete1(String account){
+        logger.info("删除该用户"+account);
+        persistService.deleteReaderByAccount(account);
+        return "redirect:login";
+    }
+    /**
+     * 删除一个用户
+     *
+     * @param account
+     * 需要删除的用户的账户
+     * @return 管理页
+     *
+     */
+    @RequestMapping(value = "/manage",method = RequestMethod.POST)
+    public String delete2(String account){
+        // doNothing
+        return "index";
     }
 }

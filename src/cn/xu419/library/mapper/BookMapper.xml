@@ -44,7 +44,7 @@
 
 
     <select id="getBooksByIsbn" resultType="cn.xu419.library.model.BookModel">
-        SELECT * FROM book WHERE book.isbn = #{isbn};
+        SELECT * FROM book WHERE book.isbn = #{isbn} limit 1;
     </select>
 
     <select id="getBooksByAuthor" resultType="cn.xu419.library.model.BookModel">

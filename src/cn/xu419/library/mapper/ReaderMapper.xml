@@ -40,4 +40,8 @@
         SELECT * FROM reader WHERE account = #{account} AND password = #{password} LIMIT 1;
     </select>
 
+    <select id="getReaders" resultType="cn.xu419.library.model.ReaderModel">
+        SELECT * FROM reader;
+    </select>
+
 </mapper>

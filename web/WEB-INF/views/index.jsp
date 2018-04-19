@@ -45,25 +45,25 @@
   </div>
   </body>
 
-<form method="post" action="/tttttttt">
-    <input type="hidden" name="_method" value="POST" />
-    <input type="submit" value="post">
-</form>
+<%--<form method="post" action="/tttttttt">--%>
+    <%--<input type="hidden" name="_method" value="POST" />--%>
+    <%--<input type="submit" value="post">--%>
+<%--</form>--%>
 
-  <form method="post" action="/tttttttt">
-      <input type="hidden" name="_method" value="GET" />
-      <input type="submit" value="get">
-  </form>
+  <%--<form method="post" action="/tttttttt">--%>
+      <%--<input type="hidden" name="_method" value="GET" />--%>
+      <%--<input type="submit" value="get">--%>
+  <%--</form>--%>
 
-  <form   method="post" action="/tttttttt">
-      <input type="hidden" name="_method" value="PUT" />
-      <input type="submit" value="put">
-  </form>
+  <%--<form   method="post" action="/tttttttt">--%>
+      <%--<input type="hidden" name="_method" value="PUT" />--%>
+      <%--<input type="submit" value="put">--%>
+  <%--</form>--%>
 
-  <form  action="/tttttttt" method="post">
-      <input type="hidden" name="_method" value="DELETE" />
-      <input type="submit" value="delete">
-  </form>
+  <%--<form  action="/tttttttt" method="post">--%>
+      <%--<input type="hidden" name="_method" value="DELETE" />--%>
+      <%--<input type="submit" value="delete">--%>
+  <%--</form>--%>
 
 
 

@@ -17,7 +17,27 @@ public interface IReaderSelect<T> {
      */
     public T getReaderByAccount(String account);
 
+
+    /**
+     * 登陆
+     *
+     * @param account
+     * 登陆账号
+     * @param password
+     * 登陆密码
+     * @return 登陆
+     *
+     */
     public T login(String account,String password);
+
+    /**
+     * 获取所有用户
+     *
+     * @return 所有用户
+     *
+     */
+    public List<T> getReaders();
+
 
 
 }

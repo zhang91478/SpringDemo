@@ -73,7 +73,7 @@
             <aop:pointcut id="ServicePointcut"
                           expression="target(
                       cn.xu419.library.service.PersistService)
-                      and execution(* *(..))"/>
+                      and execution(* addReader(..))"/>
             <aop:before method="before" pointcut-ref="ServicePointcut"/>
 
             <aop:around method="recordMethodTime" pointcut-ref="ServicePointcut"/>

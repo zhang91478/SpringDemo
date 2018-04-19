@@ -123,4 +123,19 @@ public class SelectService extends AbstractDao
             return null;
         }
     }
+
+    /**
+     * 获取所有用户
+     *
+     * @return 所有用户
+     */
+    @Override
+    public List<ReaderModel> getReaders() {
+        try {
+            return readerMapper.getReaders();
+        } catch (Exception e){
+            logger.error("ERROR",e);
+            return null;
+        }
+    }
 }

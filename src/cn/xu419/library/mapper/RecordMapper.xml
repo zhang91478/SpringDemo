@@ -26,15 +26,16 @@
         UPDATE record SET account = #{record.account},
             isbn = #{record.isbn},
             lendTime = #{record.lendTime},
-            returnTime = #{record.returnTime};
+            returnTime = #{record.returnTime}
+        WHERE isbn = #{record.isbn} AND lendTime = #{record.lendTime};
     </update>
 
     <select id="getRecordByIsbn" resultType="cn.xu419.library.model.RecordModel">
-        SELECT * FROM record WHERE isbn = #{isbn};
+        SELECT * FROM record WHERE isbn = #{isbn} ORDER BY id DESC;
     </select>
 
     <select id="getRecordByAccount" resultType="cn.xu419.library.model.RecordModel">
-        SELECT * FROM record WHERE account = #{account};
+        SELECT * FROM record WHERE account = #{account}  ORDER BY id DESC;
     </select>
 
 </mapper>

@@ -1,7 +1,10 @@
 package cn.xu419.library.aop;
 
+import cn.xu419.library.model.ReaderModel;
 import org.apache.log4j.Logger;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 
 
 /**
@@ -19,14 +22,13 @@ public class DaoAdvice {
      *
      *
      */
-    public void before(){
-        //TODO 调试过后删除此控制台显示
-        System.out.println("Before:-------------->");
+    public void before(JoinPoint jp){
+        ((ReaderModel)jp.getArgs()[0]).setEmail("****"+ ((ReaderModel)jp.getArgs()[0]).getEmail());
     }
 
-    public void After(){
+    public void After(JoinPoint jp){
         //TODO 调试过后删除此控制台显示
-        System.out.println("After:-------------->");
+        logger.info("新增用户："+((ReaderModel)jp.getArgs()[0]).toString());
     }
     /**
      * 统计业务的执行时间
